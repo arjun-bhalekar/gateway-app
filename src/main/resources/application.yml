@@ -15,7 +15,8 @@ spring:
       mvc:
         routes:
           - id: company-micro-service
-            uri: http://localhost:8081
+            #uri: http://localhost:8081  #for single service
+            uri: lb://COMPANY-MICRO-SERVICE  #for Load balanced via service discovery
             predicates:
               - Path=/companies/**
           - id: job-micro-service
@@ -27,8 +28,16 @@ spring:
             predicates:
               - Path=/reviews/**
 
-
-
+          - id: eureka-service
+            uri: http://localhost:8761
+            predicates:
+              - Path=/eureka/home
+            filters:
+              - SetPath=/
+          - id: eureka-service-static
+            uri: http://localhost:8761
+            predicates:
+              - Path=/eureka/**
 # Eureka related
 eureka:
   client:
